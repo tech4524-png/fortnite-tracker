@@ -1,0 +1,10 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: 'Heebo', sans-serif;
+  background: #1a1035;
+  color: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
+  direction: rtl;
+}
