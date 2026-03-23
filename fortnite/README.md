@@ -21,14 +21,17 @@
 2. בחר את ה-repo `fortnite-tracker` מ-GitHub
 3. לחץ **Deploy** — Vercel יזהה Next.js אוטומטית
 
-### שלב 4 — הוסף Vercel KV (מסד הנתונים)
-זה מה שגורם לנתונים להישמר בענן:
+### שלב 4 — הוסף Upstash Redis (מסד הנתונים)
 
-1. בפרויקט ב-Vercel → לשונית **Storage**
-2. לחץ **Create Database → KV**
-3. שם: `fortnite-kv` → **Create**
-4. לחץ **Connect to Project** → בחר את הפרויקט שלך
-5. לחץ **Redeploy** בפרויקט (כדי שה-env variables יתעדכנו)
+1. היכנס ל-[upstash.com](https://upstash.com) → **Sign Up** (חינמי)
+2. לחץ **Create Database** → שם: `fortnite-kv` → **Create**
+3. אחרי היצירה, לחץ על ה-database → לשונית **REST API**
+4. תראה שני ערכים — שמור אותם:
+   - `UPSTASH_REDIS_REST_URL`
+   - `UPSTASH_REDIS_REST_TOKEN`
+5. ב-Vercel → **Settings → Environment Variables**
+6. הוסף את שני המשתנים עם הערכים מ-Upstash
+7. חזור ל-**Deployments** → לחץ **Redeploy**
 
 ### שלב 5 — הכנסו!
 אחרי הדפלוי תקבל URL כמו `https://fortnite-tracker-xxx.vercel.app`

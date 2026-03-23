@@ -1,4 +1,9 @@
-import { kv } from '@vercel/kv'
+import { Redis } from '@upstash/redis'
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+})
 
 const DAYS_KEY = 'bp_days_data'
 const START_KEY = 'bp_start_date'
@@ -6,8 +11,8 @@ const START_KEY = 'bp_start_date'
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const days = await kv.get(DAYS_KEY) || {}
-      const startDate = await kv.get(START_KEY) || null
+      const days = await redis.get(DAYS_KEY) || {}
+      const startDate = await redis.get(START_KEY) || null
       return res.status(200).json({ days, startDate })
     } catch (e) {
       return res.status(500).json({ error: 'KV error', detail: e.message })
@@ -19,22 +24,22 @@ export default async function handler(req, res) {
 
     try {
       if (action === 'toggle') {
-        const days = await kv.get(DAYS_KEY) || {}
+        const days = await redis.get(DAYS_KEY) || {}
         days[dateKey] = !days[dateKey]
-        await kv.set(DAYS_KEY, days)
+        await redis.set(DAYS_KEY, days)
         return res.status(200).json({ days })
       }
 
       if (action === 'setStart') {
-        await kv.set(START_KEY, startDate)
+        await redis.set(START_KEY, startDate)
         return res.status(200).json({ startDate })
       }
 
       if (action === 'setDay') {
         const { value } = req.body
-        const days = await kv.get(DAYS_KEY) || {}
+        const days = await redis.get(DAYS_KEY) || {}
         days[dateKey] = value
-        await kv.set(DAYS_KEY, days)
+        await redis.set(DAYS_KEY, days)
         return res.status(200).json({ days })
       }
 
